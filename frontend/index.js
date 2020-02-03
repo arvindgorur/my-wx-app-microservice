@@ -60,22 +60,13 @@ app.post("/", (req, res) => {
     });
     */
   } else {
-    if (wxType == "METAR") {
-      let url = `${wxBackend}${wxType.toLowerCase()}/${city}`;
-      request(url, (err, response, body) => {
-        let results = JSON.parse(body);
-        console.log(results);
-        let metar = results.data[0];
-        res.render("index", { cityName: city, weather: metar, error: null });
-      });
-    } else {
-      request(options, function(err, response, body) {
-        let url = `${wxBackend}${wxType.toLowerCase()}/${city}`;
-        let results = JSON.parse(body);
-        let taf = results.data[0];
-        res.render("index", { cityName: city, weather: taf, error: null });
-      });
-    }
+    let url = `${wxBackend}${wxType.toLowerCase()}/${city}`;
+
+    request(url, (err, response, body) => {
+      let results = JSON.parse(body);
+      let wxResults = results.data[0];
+      res.render("index", { cityName: city, weather: wxResults, error: null });
+    });
   }
 });
 
