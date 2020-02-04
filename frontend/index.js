@@ -15,8 +15,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-router.route("/hello").get((req, res) => {
-  res.send("Hello, World!");
+router.route("/health").get((req, res) => {
+  res.send("{status:healthy}");
 });
 
 app.use("/", router);

@@ -48,6 +48,11 @@ app.get("/weather/:id", (req,res) => {
       res.send(body)
     });
 });
+
+app.get("/health", (req,res) => {
+    res.send("{status:healthy}");
+});
+
 app.listen(port, () => {
   console.log(`Listening on port ${chalk.green(port)}`);
 });
