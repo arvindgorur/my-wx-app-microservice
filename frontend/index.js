@@ -6,7 +6,7 @@ const path = require("path");
 
 const router = express.Router();
 const port = 3000;
-const wxBackend = "http://wx-app-be:8081/";
+const wxBackend = `http://${process.env.WX_BE_URL}:8081/`;
 
 let app = express();
 
