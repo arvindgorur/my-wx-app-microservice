@@ -23,8 +23,7 @@ app.get("/metar/:id", (req, res) => {
     }
   };
   request(options, (err, response, body) => {
-    let results = JSON.parse(body);
-    res.send(results)
+    res.send(body);
   });    
 });
 
@@ -38,11 +37,17 @@ app.get("/taf/:id", (req, res) => {
     }
   };
   request(options, (err, response, body) => {
-    let results = JSON.parse(body);
-    res.send(results)
+    res.send(body);
   });    
 });
 
+app.get("/weather/:id", (req,res) => {
+    let station = req.params.id;
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${station}&units=metric&appid=${apiKey}`;
+    request(url, (err, response, body) => {
+      res.send(body)
+    });
+});
 app.listen(port, () => {
   console.log(`Listening on port ${chalk.green(port)}`);
 });
