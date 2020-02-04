@@ -6,7 +6,7 @@ const path = require("path");
 
 const router = express.Router();
 const port = 3000;
-const wxBackend = "http://localhost:8081/";
+const wxBackend = "http://wx-app-be:8081/";
 
 let app = express();
 
@@ -63,6 +63,7 @@ app.post("/", (req, res) => {
     let url = `${wxBackend}${wxType.toLowerCase()}/${city}`;
 
     request(url, (err, response, body) => {
+      console.log(body);
       let results = JSON.parse(body);
       let wxResults = results.data[0];
       res.render("index", { cityName: city, weather: wxResults, error: null });
