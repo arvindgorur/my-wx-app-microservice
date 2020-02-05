@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+
+  wx-app-fe:
+    image: wx-app-fe:latest
+    container_name: wx-app-fe
+    ports:
+      - "3000:3000"
+    networks:
+      - wx-service
+    environment:
+      - WX_BE_URL=wx-app-be
+
+  wx-app-be:
+    image: wx-app-be:latest
+    container_name: wx-app-be
+    ports:
+      - "8081:8081"
+    networks:
+      - wx-service
+    env_file:
+      - ./backend.env
+networks:
+  wx-service:
+    name: wx-service
+    driver: bridge
