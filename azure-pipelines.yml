@@ -21,12 +21,23 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
+      displayName: Log in to DockerHub
+      inputs:
+        command: login
+        containerRegistry: DockerHub
+    - task: Docker@2
       displayName: Build backend image
       inputs:
-        command: build
+        command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/backend/Dockerfile'
+        repository: arvindgorur/my-wx-app-be
         tags: |
           $(tag)
+    - task: Docker@2
+      displayName: Logout of DockerHub
+      inputs:
+        command: logout
+        containerRegistry: DockerHub
   - job: Build_Frontend_Image
     displayName: Build FE
     pool:
