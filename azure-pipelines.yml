@@ -13,10 +13,10 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build Docker images
   jobs:  
-  - job: Build
-    displayName: Build
+  - job: Build_Backend_Image
+    displayName: Build BE
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -27,10 +27,15 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/backend/Dockerfile'
         tags: |
           $(tag)
+  - job: Build_Frontend_Image
+    displayName: Build FE
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
     - task: Docker@2
-      displayName: : Build frontend image
+      displayName: Build frontend image
       inputs:
         command: build
-        Dockerfile: '$(Build.SourcesDirectory/frontend/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/frontend/Dockerfile'
         tags: |
           $(tag)
