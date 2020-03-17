@@ -50,7 +50,7 @@ app.get("/weather/:id", (req,res) => {
 });
 
 app.get("/health", (req,res) => {
-    res.send("{status:healthy}");
+  res.json({ status: 'healthy' });
 });
 
 app.listen(port, () => {
