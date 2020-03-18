@@ -40,6 +40,7 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/frontend/Dockerfile'
         repository: arvindgorur/my-wx-app-fe
         tags: |
+          latest
           $(tag)
     - task: Docker@2
       displayName: Logout of DockerHub
