@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: my-wx-app-fe
-        image: arvindgorur/my-wx-app-fe:13
+        image: arvindgorur/my-wx-app-fe:14
         ports:
           - containerPort: 3000
         livenessProbe:
