@@ -6,15 +6,51 @@ spec:
   selector:
     matchLabels:
       app: my-wx-app-fe
-  replicas: 4
+  replicas: 2
   template:
     metadata:
       labels:
         app: my-wx-app-fe
+        version: '12'
     spec:
       containers:
       - name: my-wx-app-fe
-        image: arvindgorur/my-wx-app-fe:latest
+        image: arvindgorur/my-wx-app-fe:12
+        ports:
+          - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+        env:
+          - name: WX_BE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: envvars
+                key: wx_be_url
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-wx-app-fe-new
+spec:
+  selector:
+    matchLabels:
+      app: my-wx-app-fe
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-wx-app-fe
+        version: '13'
+    spec:
+      containers:
+      - name: my-wx-app-fe
+        image: arvindgorur/my-wx-app-fe:13
         ports:
           - containerPort: 3000
         livenessProbe:
@@ -45,12 +81,14 @@ spec:
     metadata:
       labels:
         app: my-wx-app-be
+        version: '13'
     spec:
       containers:
       - name: my-wx-app-be
-        image: arvindgorur/my-wx-app-be:latest
+        image: arvindgorur/my-wx-app-be:13
         ports:
           - containerPort: 8081
+        livenessProbe:
           httpGet:
             path: /health
             port: 3000

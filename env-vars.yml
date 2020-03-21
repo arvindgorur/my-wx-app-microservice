@@ -4,6 +4,6 @@ metadata:
   name: envvars
   namespace: default
 data:
+  openwxmap: openweathermap_api_key
   checkwx: checkwx_api_key
-  openexpmap: openweathermap_api_key
   wx_be_url: my-wx-app-be-service

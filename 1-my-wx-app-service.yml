@@ -5,6 +5,7 @@ metadata:
 spec:
   ports:
   - port: 80
+    name: http
     protocol: TCP
     targetPort: 3000
   type: NodePort
@@ -18,6 +19,7 @@ metadata:
 spec:
   ports:
   - port: 8081
+    name: http-be
     protocol: TCP
     targetPort: 8081
   type: NodePort
