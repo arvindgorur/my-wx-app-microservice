@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 router.route("/health").get((req, res) => {
-  res.json({ status: 'healthy', version: '1.00' });
+  res.json({ status: 'healthy', service: 'frontend', version: '1.01' });
 });
 
 app.use("/", router);

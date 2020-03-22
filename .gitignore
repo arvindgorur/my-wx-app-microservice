@@ -60,3 +60,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Terraform folders and files
+.terraform
+*.tfvars
+*.tfstate
+*.backup

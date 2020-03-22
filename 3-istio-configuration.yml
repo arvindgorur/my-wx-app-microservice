@@ -1,0 +1,84 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: my-wx-app-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+    name: my-wx-app-fe-vs
+    namespace: default
+spec:
+    hosts:
+    - "*"
+    gateways:
+    - my-wx-app-gateway
+    http:
+    - route:
+        - destination:
+            host: my-wx-app-fe-service.default.svc.cluster.local
+            subset: '14'
+          weight: 0
+        - destination:
+            host: my-wx-app-fe-service.default.svc.cluster.local
+            subset: '15'
+          weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: my-wx-app-fe-rule
+  namespace: default
+spec:
+  host: my-wx-app-fe-service.default.svc.cluster.local
+  subsets:
+    - labels:
+        version: '14'
+      name: '14'
+    - labels:
+        version: '15'
+      name: '15'
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+    name: my-wx-app-be-vs
+spec:
+    hosts:
+    - my-wx-app-be-service.default.svc.cluster.local
+    http:
+    - route:
+        - destination:
+            host: my-wx-app-be-service.default.svc.cluster.local
+            subset: '14'
+          weight: 0
+        - destination:
+            host: my-wx-app-be-service.default.svc.cluster.local
+            subset: '15'
+          weight: 100
+---
+  apiVersion: networking.istio.io/v1alpha3
+  kind: DestinationRule
+  metadata:
+    name: my-wx-app-be-rule
+    namespace: default
+  spec:
+    host: my-wx-app-be-service.default.svc.cluster.local
+    subsets:
+      - labels:
+          version: '14'
+        name: '14'
+      - labels:
+          version: '15'
+        name: '15'
+  

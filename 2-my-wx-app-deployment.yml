@@ -5,8 +5,8 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: my-wx-app-fe
-  replicas: 2
+      app: my-wx-app-fe       # deployment manages pods that have this label
+  replicas: 1
   template:
     metadata:
       labels:
@@ -15,7 +15,12 @@ spec:
     spec:
       containers:
       - name: my-wx-app-fe
-        image: arvindgorur/my-wx-app-fe:12
+        image: arvindgorur/my-wx-app-fe:14
+        resources:
+          limits:
+            cpu: "0.1"
+          requests:
+            cpu: "0.05"
         ports:
           - containerPort: 3000
         livenessProbe:
@@ -40,17 +45,22 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: my-wx-app-fe
+      app: my-wx-app-fe       # deployment manages pods that have this label
   replicas: 1
   template:
     metadata:
       labels:
         app: my-wx-app-fe
-        version: '13'
+        version: '14'
     spec:
       containers:
       - name: my-wx-app-fe
-        image: arvindgorur/my-wx-app-fe:14
+        image: arvindgorur/my-wx-app-fe:15
+        resources:
+          limits:
+            cpu: "0.1"
+          requests:
+            cpu: "0.05"
         ports:
           - containerPort: 3000
         livenessProbe:
@@ -76,16 +86,66 @@ spec:
   selector:
     matchLabels:
       app: my-wx-app-be
-  replicas: 4
+  replicas: 1
   template:
     metadata:
       labels:
-        app: my-wx-app-be
+        app: my-wx-app-be       # deployment manages pods that have this label
         version: '13'
     spec:
       containers:
       - name: my-wx-app-be
-        image: arvindgorur/my-wx-app-be:13
+        image: arvindgorur/my-wx-app-be:14
+        resources:
+          limits:
+            cpu: "0.1"
+          requests:
+            cpu: "0.05"
+        ports:
+          - containerPort: 8081
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+        env:
+          - name: OPEN_WX_API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: envvars
+                key: openwxmap
+          - name: AV_WX_API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: envvars
+                key: checkwx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-wx-app-be-new
+spec:
+  selector:
+    matchLabels:
+      app: my-wx-app-be       # deployment manages pods that have this label
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-wx-app-be
+        version: '14'
+    spec:
+      containers:
+      - name: my-wx-app-be
+        image: arvindgorur/my-wx-app-be:15
+        resources:
+          limits:
+            cpu: "0.1"
+          requests:
+            cpu: "0.05"
         ports:
           - containerPort: 8081
         livenessProbe:
