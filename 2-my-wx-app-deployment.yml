@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: my-wx-app-fe
-        version: '12'
+        version: '14'
     spec:
       containers:
       - name: my-wx-app-fe
@@ -51,7 +51,7 @@ spec:
     metadata:
       labels:
         app: my-wx-app-fe
-        version: '14'
+        version: '15'
     spec:
       containers:
       - name: my-wx-app-fe
@@ -91,7 +91,7 @@ spec:
     metadata:
       labels:
         app: my-wx-app-be       # deployment manages pods that have this label
-        version: '13'
+        version: '14'
     spec:
       containers:
       - name: my-wx-app-be
@@ -106,7 +106,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 3000
+            port: 8081
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
@@ -136,7 +136,7 @@ spec:
     metadata:
       labels:
         app: my-wx-app-be
-        version: '14'
+        version: '15'
     spec:
       containers:
       - name: my-wx-app-be
@@ -151,7 +151,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 3000
+            port: 8081
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
