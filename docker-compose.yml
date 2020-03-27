@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   wx-app-fe:
-    image: wx-app-fe:latest
+    image: arvindgorur/my-wx-app-fe:15
     container_name: wx-app-fe
     ports:
       - "3000:3000"
@@ -12,7 +12,7 @@ services:
       - WX_BE_URL=wx-app-be
 
   wx-app-be:
-    image: wx-app-be:latest
+    image: arvindgorur/my-wx-app-be:15
     container_name: wx-app-be
     ports:
       - "8081:8081"
