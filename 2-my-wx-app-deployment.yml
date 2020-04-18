@@ -77,6 +77,20 @@ spec:
               configMapKeyRef:
                 name: envvars
                 key: wx_be_url
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: version
+                    operator: In
+                    values:
+                      - '14'
+                  - key: app
+                    operator: In
+                    values:
+                      - my-wx-app-fe
+              topologyKey: "kubernetes.io/hostname"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,6 +136,20 @@ spec:
               configMapKeyRef:
                 name: envvars
                 key: checkwx
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: version
+                    operator: In
+                    values:
+                      - '14'
+                  - key: app
+                    operator: In
+                    values:
+                      - my-wx-app-fe
+              topologyKey: "kubernetes.io/hostname"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -167,3 +195,17 @@ spec:
               configMapKeyRef:
                 name: envvars
                 key: checkwx
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: version
+                    operator: In
+                    values:
+                      - '15'
+                  - key: app
+                    operator: In
+                    values:
+                      - my-wx-app-fe
+              topologyKey: "kubernetes.io/hostname"
