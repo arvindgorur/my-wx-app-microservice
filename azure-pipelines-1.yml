@@ -1,0 +1,68 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+pool:
+  name: Default
+
+stages:
+- stage: Build
+  displayName: Build Docker images
+  jobs:
+  - job: Login_Docker_Hub
+    displayName: Log into Docker Hub
+    steps:
+    - task: Docker@2
+      displayName: Log in to DockerHub
+      inputs:
+        command: login
+        containerRegistry: DockerHub
+
+  - job: Build_Backend_Image
+    displayName: Build Backend Image
+    dependsOn:
+    - Login_Docker_Hub
+    steps:
+    - task: Docker@2
+      displayName: Build backend image
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/backend/Dockerfile'
+        repository: arvindgorur/my-wx-app-be
+        tags: |
+          $(tag)
+
+  - job: Build_Frontend_Image
+    displayName: Build Frontend Image
+    dependsOn:
+    - Login_Docker_Hub
+    steps:
+    - task: Docker@2
+      displayName: Build frontend image
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/frontend/Dockerfile'
+        repository: arvindgorur/my-wx-app-fe
+        tags: |
+          $(tag)
+
+  - job: Logout_Docker_Hub
+    displayName: Logout of Docker Hub
+    dependsOn:
+    - Build_Backend_Image
+    - Build_Frontend_Image
+    steps:
+    - task: Docker@2
+      displayName: Logout of DockerHub
+      inputs:
+        command: logout
+        containerRegistry: DockerHub
