@@ -18,20 +18,14 @@ stages:
 - stage: Build
   displayName: Build Docker images
   jobs:
-  - job: Login_Docker_Hub
-    displayName: Log into Docker Hub
+  - job: Build_Backend_Image
+    displayName: Build Backend Image
     steps:
     - task: Docker@2
       displayName: Log in to DockerHub
       inputs:
         command: login
         containerRegistry: DockerHub
-
-  - job: Build_Backend_Image
-    displayName: Build Backend Image
-    dependsOn:
-    - Login_Docker_Hub
-    steps:
     - task: Docker@2
       displayName: Build backend image
       inputs:
@@ -40,12 +34,20 @@ stages:
         repository: arvindgorur/my-wx-app-be
         tags: |
           $(tag)
+    - task: Docker@2
+      displayName: Logout of DockerHub
+      inputs:
+        command: logout
+        containerRegistry: DockerHub
 
   - job: Build_Frontend_Image
     displayName: Build Frontend Image
-    dependsOn:
-    - Login_Docker_Hub
     steps:
+    - task: Docker@2
+      displayName: Log in to DockerHub
+      inputs:
+        command: login
+        containerRegistry: DockerHub
     - task: Docker@2
       displayName: Build frontend image
       inputs:
@@ -54,13 +56,6 @@ stages:
         repository: arvindgorur/my-wx-app-fe
         tags: |
           $(tag)
-
-  - job: Logout_Docker_Hub
-    displayName: Logout of Docker Hub
-    dependsOn:
-    - Build_Backend_Image
-    - Build_Frontend_Image
-    steps:
     - task: Docker@2
       displayName: Logout of DockerHub
       inputs:
