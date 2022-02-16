@@ -11,14 +11,15 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
 
+pool:
+  name: Default
+
 stages:
 - stage: Build
   displayName: Build Docker images
   jobs:  
   - job: Build_App_Images
     displayName: Build App Images
-    pool:
-      pool: Default
     steps:
     - task: Docker@2
       displayName: Log in to DockerHub
