@@ -18,7 +18,7 @@ stages:
   - job: Build_App_Images
     displayName: Build App Images
     pool:
-      vmImage: Default
+      pool: Default
     steps:
     - task: Docker@2
       displayName: Log in to DockerHub
